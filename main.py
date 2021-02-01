@@ -23,6 +23,8 @@ class Square:
 
 def check_for_winner():  # Check whether there is a winner, exits the program if there is a winner
     global can_mark, player1_score, player2_score
+
+    # Check if crosses win
     if squares[0].symbol == 'X' and squares[1].symbol == 'X' and squares[2].symbol == 'X':
         can_mark = False
         pygame.time.wait(250)
@@ -68,6 +70,7 @@ def check_for_winner():  # Check whether there is a winner, exits the program if
         pygame.time.wait(250)
         pygame.draw.line(root_window, YELLOW, (squares[2].x + 125, squares[2].y - 25),
                          (squares[6].x - 25, squares[6].y + 125), 4)
+
     # Checking if noughts win
     elif squares[0].symbol == 'O' and squares[1].symbol == 'O' and squares[2].symbol == 'O':
         can_mark = False
@@ -153,6 +156,13 @@ if __name__ == '__main__':
 
     root_window.blit(grid, (200, 200))
 
+    # Creating the main menu
+
+    main_menu = pygame.Surface((700, 700))
+    main_menu.blit(pygame.image.load('Assets/tictactoe.png'), (224, 80))
+    main_menu.blit(pygame.image.load('Assets/enterp1.png'), (120, 200))
+    root_window.blit(main_menu, (0, 0))
+
     # main game loop
     while True:
 
@@ -164,7 +174,7 @@ if __name__ == '__main__':
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 if can_mark:
                     for square in squares:
-                        if square.symbol:  # Cannot mark a square that has already been marked
+                        if square.symbol:  # Checks if a square already has been marked with an X or O
                             continue
                         if square.collide_point(mouse_x, mouse_y):
                             if player_turn % 2 == 0:
