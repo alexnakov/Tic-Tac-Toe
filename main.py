@@ -1,5 +1,6 @@
 import pygame
 import sys
+from textinput import TextInput
 from pygame.locals import *
 from constants import *
 
@@ -162,11 +163,14 @@ if __name__ == '__main__':
     main_menu.blit(pygame.image.load('Assets/tictactoe.png'), (224, 80))
     main_menu.blit(pygame.image.load('Assets/enterp1.png'), (120, 200))
     root_window.blit(main_menu, (0, 0))
+    textbox_surf = pygame.Surface((400, 200))
+    textbox = TextInput()
 
     # main game loop
     while True:
 
-        for event in pygame.event.get():
+        events = pygame.event.get()
+        for event in events:
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
@@ -190,6 +194,13 @@ if __name__ == '__main__':
             elif event.type == KEYDOWN:
                 if event.key == K_0:
                     print_results()
+
+        textbox.update(events)
+
+        textbox_surf.fill((220, 200, 220))
+        textbox_surf.blit(textbox.get_surface(), (10, 10))
+        main_menu.blit(textbox_surf, (150, 250))
+        root_window.blit(main_menu, (0, 0))
 
         pygame.display.update()
         clock.tick(60)
