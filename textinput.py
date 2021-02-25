@@ -1,5 +1,6 @@
-import os.path
+# TODO credit the creator of the class
 
+import os.path
 import pygame
 from pygame.locals import *
 
@@ -179,6 +180,7 @@ class TextInput:
         self.cursor_position = 0
 
 
+# examples of how it works
 if __name__ == "__main__":
     pygame.init()
 
@@ -193,7 +195,6 @@ if __name__ == "__main__":
         screen.fill((200, 200, 200))
         surf.fill((100, 100, 100))
 
-
         events = pygame.event.get()
         print(events)
         for event in events:
@@ -205,7 +206,6 @@ if __name__ == "__main__":
 
         # Blit its surface onto the screen
         surf.blit(textbox.get_surface(), (10, 10))
-
 
         screen.blit(surf, (10, 10))
 

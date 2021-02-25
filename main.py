@@ -22,6 +22,39 @@ class Square:
             return False
 
 
+class Button:
+    """ This template will be used to create buttons """
+    def __init__(self, screen, x, y, length, height, path_unclicked, path_clicked):
+        self.screen = screen
+        self.x, self.y = x, y
+        self.length, self.height = length, height
+        self.path_unclicked = path_unclicked
+        self.path_clicked = path_clicked
+        self.surf = pygame.Surface((self.length, self.height))
+
+    def collide_point(self, x, y):
+        """ Returns True if an x, y coord lies within the square, otherwise False """
+
+        if self.x <= x <= self.x + self.length and self.y <= y <= self.y + self.length:
+            return True
+        else:
+            return False
+
+    def update(self, events):
+        self.surf.blit(pygame.image.load('Assets/b1u.png'), (0, 0))
+        self.screen.blit(self.surf, (self.x, self.y))
+
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        for event in events:
+            if event.type == MOUSEBUTTONDOWN:
+                if self.collide_point(mouse_x, mouse_y):
+                    self.surf.blit(pygame.image.load('Assets/b1c.png'), (0, 0))
+                    self.screen.blit(self.surf, (self.x, self.y))
+            elif event.type == MOUSEBUTTONUP:
+                if self.collide_point(mouse_x, mouse_y):
+                    self.screen.blit(pygame.image.load(self.path_clicked), (self.x, self.y))
+
+
 def check_for_winner():  # Check whether there is a winner, exits the program if there is a winner
     global can_mark, player1_score, player2_score
 
@@ -131,9 +164,7 @@ if __name__ == '__main__':
     squares = []
     player_turn = 1
     player1_score, player2_score = 0, 0
-    can_mark = True
-
-    menu = pygame.Surface((700, 700))
+    can_mark = False  # The game has not began yet
 
     cross = pygame.Surface((80, 80))  # Creating the cross picture
     pygame.draw.line(cross, RED, (0, 0), (80, 80), 12)
@@ -155,18 +186,22 @@ if __name__ == '__main__':
     for i in range(4):
         pygame.draw.line(grid, (150, 150, 150), (0, i * 100), (300, i * 100))
 
-    root_window.blit(grid, (200, 200))
+    root_window.blit(grid, (200, 200))  # TODO this should be moved forward
 
     # Creating the main menu
-
     main_menu = pygame.Surface((700, 700))
+
     main_menu.blit(pygame.image.load('Assets/tictactoe.png'), (224, 80))
     main_menu.blit(pygame.image.load('Assets/enterp1.png'), (120, 200))
-    root_window.blit(main_menu, (0, 0))
-    textbox_surf = pygame.Surface((400, 200))
-    textbox = TextInput()
 
-    # main game loop
+    button1 = Button(main_menu, 150, 500, 400, 68, 'Assets/b1u.png', 'Assets/b1u.png')
+    button1_surf = pygame.Surface((400, 68))
+
+    root_window.blit(main_menu, (0, 0))
+
+    textbox_surf = pygame.Surface((400, 100))
+    textbox = TextInput(max_string_length=18)
+
     while True:
 
         events = pygame.event.get()
@@ -199,8 +234,11 @@ if __name__ == '__main__':
 
         textbox_surf.fill((220, 200, 220))
         textbox_surf.blit(textbox.get_surface(), (10, 10))
-        main_menu.blit(textbox_surf, (150, 250))
+
+        main_menu.blit(textbox_surf, (150, 300))
+        button1.update(events)
         root_window.blit(main_menu, (0, 0))
+
 
         pygame.display.update()
         clock.tick(60)
