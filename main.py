@@ -24,8 +24,8 @@ class Square:
 
 class Button:
     """ This template will be used to create buttons """
-    def __init__(self, screen, x, y, length, height, path_unclicked, path_clicked):
-        self.screen = screen
+    def __init__(self, super_surface, x, y, length, height, path_unclicked, path_clicked):
+        self.super_surf = super_surface
         self.x, self.y = x, y
         self.length, self.height = length, height
         self.path_unclicked = path_unclicked
@@ -33,26 +33,25 @@ class Button:
         self.surf = pygame.Surface((self.length, self.height))
 
     def collide_point(self, x, y):
-        """ Returns True if an x, y coord lies within the square, otherwise False """
-
-        if self.x <= x <= self.x + self.length and self.y <= y <= self.y + self.length:
+        if self.x <= x <= self.x + self.length and self.y <= y <= self.y + self.height:
             return True
         else:
             return False
 
     def update(self, events):
-        self.surf.blit(pygame.image.load('Assets/b1u.png'), (0, 0))
-        self.screen.blit(self.surf, (self.x, self.y))
-
         mouse_x, mouse_y = pygame.mouse.get_pos()
         for event in events:
             if event.type == MOUSEBUTTONDOWN:
                 if self.collide_point(mouse_x, mouse_y):
-                    self.surf.blit(pygame.image.load('Assets/b1c.png'), (0, 0))
-                    self.screen.blit(self.surf, (self.x, self.y))
+                    self.surf.blit(pygame.image.load(self.path_clicked), (0, 0))
+                    self.super_surf.blit(self.surf, (self.x, self.y))
             elif event.type == MOUSEBUTTONUP:
                 if self.collide_point(mouse_x, mouse_y):
-                    self.screen.blit(pygame.image.load(self.path_clicked), (self.x, self.y))
+                    self.surf.blit(pygame.image.load(self.path_unclicked), (0, 0))
+                    self.super_surf.blit(self.surf, (self.x, self.y))
+            else:
+                self.surf.blit(pygame.image.load(self.path_unclicked), (0, 0))
+                self.super_surf.blit(self.surf, (self.x, self.y))
 
 
 def check_for_winner():  # Check whether there is a winner, exits the program if there is a winner
@@ -194,7 +193,7 @@ if __name__ == '__main__':
     main_menu.blit(pygame.image.load('Assets/tictactoe.png'), (224, 80))
     main_menu.blit(pygame.image.load('Assets/enterp1.png'), (120, 200))
 
-    button1 = Button(main_menu, 150, 500, 400, 68, 'Assets/b1u.png', 'Assets/b1u.png')
+    button1 = Button(main_menu, 150, 500, 427, 113, 'Assets/b1u.png', 'Assets/b1c.png')
     button1_surf = pygame.Surface((400, 68))
 
     root_window.blit(main_menu, (0, 0))
