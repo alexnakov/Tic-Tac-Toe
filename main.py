@@ -172,7 +172,7 @@ if __name__ == '__main__':
     nought = pygame.Surface((80, 80))  # Creating the nought picture
     pygame.draw.circle(nought, BLUE, (40, 40), 40, 6)
 
-    # Creating the squares inside the grid
+    # Creating the squares of the grid
     for i in range(3):
         for j in range(3):
             squares.append(Square(200 + j * 100, 200 + i * 100, 100))
@@ -187,17 +187,12 @@ if __name__ == '__main__':
 
     root_window.blit(grid, (200, 200))  # TODO this should be moved forward
 
-    # Creating the main menu
+     # Creating the main menu
     main_menu = pygame.Surface((700, 700))
-
     main_menu.blit(pygame.image.load('Assets/tictactoe.png'), (224, 80))
     main_menu.blit(pygame.image.load('Assets/enterp1.png'), (120, 200))
-
     button1 = Button(main_menu, 150, 500, 427, 113, 'Assets/b1u.png', 'Assets/b1c.png')
-    button1_surf = pygame.Surface((400, 68))
-
     root_window.blit(main_menu, (0, 0))
-
     textbox_surf = pygame.Surface((400, 100))
     textbox = TextInput(max_string_length=18)
 
