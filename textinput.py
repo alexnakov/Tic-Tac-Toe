@@ -1,4 +1,4 @@
-# TODO credit the creator of the class
+# TODO credit the author of the class
 
 import os.path
 import pygame
@@ -15,6 +15,7 @@ class TextInput:
     """
     def __init__(
             self,
+            super_surf, x, y, width, height, surf_color, text_buffer=(10, 10),  # mine
             initial_string="",
             font_family="",
             font_size=35,
@@ -36,6 +37,13 @@ class TextInput:
         :param repeat_keys_interval_ms: Interval between key press repetition when held
         :param max_string_length: Allowed length of text
         """
+
+        # mine
+        self.x, self.y, self.width, self.height = x, y, width, height
+        self.surf_color = surf_color
+        self.super_surf = super_surf
+        self.text_buffer = text_buffer
+        self.surf = pygame.Surface((self.width, self.height))
 
         # Text related vars:
         self.antialias = antialias
@@ -156,6 +164,10 @@ class TextInput:
             if self.cursor_position > 0:
                 cursor_y_pos -= self.cursor_surface.get_width()
             self.surface.blit(self.cursor_surface, (cursor_y_pos, 0))
+        # mine
+        self.surf.fill(self.surf_color)
+        self.surf.blit(self.surface, self.text_buffer)
+        self.super_surf.blit(self.surf, (self.x, self.y))
 
         self.clock.tick()
         return False

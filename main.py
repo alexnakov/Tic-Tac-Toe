@@ -187,14 +187,13 @@ if __name__ == '__main__':
 
     root_window.blit(grid, (200, 200))  # TODO this should be moved forward
 
-     # Creating the main menu
+    # Creating the main menu
     main_menu = pygame.Surface((700, 700))
     main_menu.blit(pygame.image.load('Assets/tictactoe.png'), (224, 80))
     main_menu.blit(pygame.image.load('Assets/enterp1.png'), (120, 200))
     button1 = Button(main_menu, 150, 500, 427, 113, 'Assets/b1u.png', 'Assets/b1c.png')
     root_window.blit(main_menu, (0, 0))
-    textbox_surf = pygame.Surface((400, 100))
-    textbox = TextInput(max_string_length=18)
+    textbox1 = TextInput(main_menu, 150, 300, 400, 100, (220, 200, 220), max_string_length=18)
 
     while True:
 
@@ -224,15 +223,9 @@ if __name__ == '__main__':
                 if event.key == K_0:
                     print_results()
 
-        textbox.update(events)
-
-        textbox_surf.fill((220, 200, 220))
-        textbox_surf.blit(textbox.get_surface(), (10, 10))
-
-        main_menu.blit(textbox_surf, (150, 300))
+        textbox1.update(events)
         button1.update(events)
         root_window.blit(main_menu, (0, 0))
-
 
         pygame.display.update()
         clock.tick(60)

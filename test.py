@@ -1,17 +1,17 @@
-import pygame
-import sys
-from textinput import TextInput
+import pygame, sys
 from pygame.locals import *
-from constants import *
+from textinput import TextInput
+
 
 class Button:
     """ This template will be used to create buttons """
-    def __init__(self, super_surface, x, y, length, height, path_unclicked, path_clicked):
+    def __init__(self, super_surface, x, y, length, height, path_unclicked, path_clicked, on_click_func):
         self.super_surf = super_surface
         self.x, self.y = x, y
         self.length, self.height = length, height
         self.path_unclicked = path_unclicked
         self.path_clicked = path_clicked
+        self.on_click_func = on_click_func
         self.surf = pygame.Surface((self.length, self.height))
 
     def collide_point(self, x, y):
@@ -31,15 +31,17 @@ class Button:
                 if self.collide_point(mouse_x, mouse_y):
                     self.surf.blit(pygame.image.load(self.path_unclicked), (0, 0))
                     self.super_surf.blit(self.surf, (self.x, self.y))
+                    if self.on_click_func is not None:
+                        self.on_click_func()
             else:
                 self.surf.blit(pygame.image.load(self.path_unclicked), (0, 0))
                 self.super_surf.blit(self.surf, (self.x, self.y))
 
 
-def launch_main_menu(super_surf):
-    main_menu = pygame.Surface((700, 700))
-
-    button1 = Button(main_menu, 150, 500, 427, 113, 'Assets/b1u.png', 'Assets/b1c.png')
+def show_window1():
+    window1 = pygame.Surface((700, 700))
+    window1.fill((50, 0, 0))
+    button1 = Button(root, 10, 10, 427, 113, 'Assets/b1u.png', 'Assets/b1c.png', show_window2)
 
     while True:
         events = pygame.event.get()
@@ -50,15 +52,28 @@ def launch_main_menu(super_surf):
 
         button1.update(events)
 
-        main_menu.blit(super_surf, (0, 0))
+        pygame.display.update()
+
+
+def show_window2():
+    window1 = pygame.Surface((700, 700))
+    window1.fill((50, 0, 100))
+    button1 = Button(root, 100, 350, 427, 113, 'Assets/b1u.png', 'Assets/b1c.png', None)
+
+    while True:
+        events = pygame.event.get()
+        for event in events:
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+        button1.update(events)
         pygame.display.update()
 
 
 def main():
     pygame.init()
-    root = pygame.display.set_mode((700, 700))
-
-    launch_main_menu(root)
+    show_window1()
 
     while True:
         events = pygame.event.get()
@@ -67,8 +82,10 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-        button1.update(events)
+
         pygame.display.update()
 
+
 if __name__ == '__main__':
+    root = pygame.display.set_mode((700, 700))
     main()
