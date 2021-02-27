@@ -69,12 +69,19 @@ class Button:
                 self.super_surf.blit(self.surf, (self.x, self.y))
 
 
+def render_text(super_surf, text, x, y):
+    my_font = pygame.font.SysFont('calibri', 30)
+    text_surf = my_font.render(text, True, (250, 250, 250), (0, 0, 0))
+    super_surf.blit(text_surf, (x, y))
+
+
 def enter_player1():
+    global player1_name
     menu_surf = pygame.Surface((700, 700))
     menu_surf.blit(pygame.image.load('Assets/tictactoe.png'), (224, 80))
     menu_surf.blit(pygame.image.load('Assets/enterp1.png'), (120, 200))
     button1 = Button(menu_surf, 150, 500, 427, 113, 'Assets/b1u.png', 'Assets/b1c.png')
-    textbox1 = TextInput(menu_surf, 150, 300, 400, 100, (220, 200, 220), max_string_length=18)
+    textbox1 = TextInput(menu_surf, 150, 300, 400, 100, (220, 200, 220), max_string_length=12)
     screen.blit(menu_surf, (0, 0))
 
     while True:
@@ -94,11 +101,12 @@ def enter_player1():
 
 
 def enter_player2():
+    global player2_name
     menu_surf = pygame.Surface((700, 700))
     menu_surf.blit(pygame.image.load('Assets/tictactoe.png'), (224, 80))
     menu_surf.blit(pygame.image.load('Assets/enterp2.png'), (120, 200))
     button1 = Button(menu_surf, 150, 500, 427, 113, 'Assets/b1u.png', 'Assets/b1c.png')
-    textbox1 = TextInput(menu_surf, 150, 300, 400, 100, (220, 200, 220), max_string_length=18)
+    textbox1 = TextInput(menu_surf, 150, 300, 400, 100, (220, 200, 220), max_string_length=12)
     screen.blit(menu_surf, (0, 0))
 
     while True:
@@ -123,6 +131,13 @@ def play():
     player_turn = 1
     can_mark = True
     player1_score, player2_score = 0, 0
+    my_font = pygame.font.SysFont('calibri', 25)
+
+    player1_name_surf = my_font.render(f"{player1_name}: {player1_score}", True, (250, 250, 250), (0, 0, 0))
+    window.blit(player1_name_surf, (5, 5))
+
+    player2_name_surf = my_font.render(f"{player2_name}: {player2_score}", True, (250, 250, 250), (0, 0, 0))
+    window.blit(player2_name_surf, (695 - player2_name_surf.get_width(), 5))
 
     cross = pygame.Surface((80, 80))  # Creating the cross picture
     pygame.draw.line(cross, RED, (0, 0), (80, 80), 12)
@@ -148,8 +163,7 @@ def play():
     screen.blit(window, (0, 0))
 
     def check_for_winner():  # Check whether there is a winner, exits the program if there is a winner
-        nonlocal can_mark
-        global player1_score, player2_score
+        nonlocal can_mark, player1_score, player2_score
 
         # Check if crosses win
         if squares[0].symbol == 'X' and squares[1].symbol == 'X' and squares[2].symbol == 'X':
@@ -199,6 +213,7 @@ def play():
                              (squares[6].x - 25, squares[6].y + 125), 4)
 
         # Checking if noughts win
+
         elif squares[0].symbol == 'O' and squares[1].symbol == 'O' and squares[2].symbol == 'O':
             can_mark = False
             pygame.time.wait(250)
@@ -272,15 +287,19 @@ def play():
                             player_turn += 1
                             check_for_winner()
 
+        player1_name_surf = my_font.render(f"{player1_name}: {player1_score}", True, (250, 250, 250), (0, 0, 0))
+        window.blit(player1_name_surf, (5, 5))
+        player2_name_surf = my_font.render(f"{player2_name}: {player2_score}", True, (250, 250, 250), (0, 0, 0))
+        window.blit(player2_name_surf, (700 - player2_name_surf.get_width(), 5))
+
         pygame.display.update()
         clock.tick(60)
-
 
 
 if __name__ == '__main__':
     screen = pygame.display.set_mode((700, 700))
     clock = pygame.time.Clock()
-    player1_name, player_name = "", ""
+    player1_name, player2_name = "", ""
 
     enter_player1()
     enter_player2()
