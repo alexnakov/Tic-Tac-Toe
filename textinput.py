@@ -44,6 +44,7 @@ class TextInput:
         self.super_surf = super_surf
         self.text_buffer = text_buffer
         self.surf = pygame.Surface((self.width, self.height))
+        self.super_surf.blit(self.surf, (self.x, self.y))
 
         # Text related vars:
         self.antialias = antialias
