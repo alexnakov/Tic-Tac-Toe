@@ -70,7 +70,7 @@ class Button:
 
 
 class Player:
-    def __init__(self, name, symbol, in_turn):
+    def __init__(self, name, symbol, in_turn, score):
         self.name = name
         self.symbol = symbol
         self.in_turn = in_turn
@@ -138,13 +138,11 @@ def enter_player2():
 def play():
     window = pygame.Surface((700, 700))
     squares = []
-    player_turn = 1
     can_mark = True
     player1_score, player2_score = 0, 0
 
-    player1 = Player(player1_name, 'cross', True)
-    player2 = Player(player2_name, 'nought', False)
-    players = [player1, player2]
+    player1 = Player(player1_name, 'X', True, 0)
+    player2 = Player(player2_name, 'O', False, 0)
 
     my_font = pygame.font.SysFont('calibri', 30)
     round_result = None
@@ -161,6 +159,8 @@ def play():
 
     nought = pygame.Surface((80, 80))  # Creating the nought picture
     pygame.draw.circle(nought, BLUE, (40, 40), 40, 6)
+
+    symbols_dict = {'X': cross, 'O': nought}
 
     # Creating the squares of the grid
     for i in range(3):
@@ -188,63 +188,63 @@ def play():
             pygame.draw.line(window, YELLOW, (squares[0].x - 50, squares[0].y + 50),
                              (squares[2].x + 150, squares[2].y + 50), 4)
             screen.blit(window, (0, 0))
-            return 'cross'
+            return 'X'
         elif squares[3].symbol == 'X' and squares[4].symbol == 'X' and squares[5].symbol == 'X':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[3].x - 50, squares[3].y + 50),
                              (squares[5].x + 150, squares[5].y + 50), 4)
             screen.blit(window, (0, 0))
-            return 'cross'
+            return 'X'
         elif squares[6].symbol == 'X' and squares[7].symbol == 'X' and squares[8].symbol == 'X':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[6].x - 50, squares[6].y + 50),
                              (squares[8].x + 150, squares[8].y + 50), 4)
             screen.blit(window, (0, 0))
-            return 'cross'
+            return 'X'
         elif squares[0].symbol == 'X' and squares[3].symbol == 'X' and squares[6].symbol == 'X':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[0].x + 50, squares[0].y - 50),
                              (squares[6].x + 50, squares[6].y + 150), 4)
             screen.blit(window, (0, 0))
-            return 'cross'
+            return 'X'
         elif squares[1].symbol == 'X' and squares[4].symbol == 'X' and squares[7].symbol == 'X':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[1].x + 50, squares[1].y - 50),
                              (squares[7].x + 50, squares[7].y + 150), 4)
             screen.blit(window, (0, 0))
-            return 'cross'
+            return 'X'
         elif squares[1].symbol == 'X' and squares[4].symbol == 'X' and squares[7].symbol == 'X':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[1].x + 50, squares[1].y - 50),
                              (squares[7].x + 50, squares[7].y + 150), 4)
             screen.blit(window, (0, 0))
-            return 'cross'
+            return 'X'
         elif squares[2].symbol == 'X' and squares[5].symbol == 'X' and squares[8].symbol == 'X':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[2].x + 50, squares[2].y - 50),
                              (squares[8].x + 50, squares[8].y + 150), 4)
             screen.blit(window, (0, 0))
-            return 'cross'
+            return 'X'
         elif squares[0].symbol == 'X' and squares[4].symbol == 'X' and squares[8].symbol == 'X':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[0].x - 25, squares[0].y - 25),
                              (squares[8].x + 125, squares[8].y + 125), 4)
             screen.blit(window, (0, 0))
-            return 'cross'
+            return 'X'
         elif squares[2].symbol == 'X' and squares[4].symbol == 'X' and squares[6].symbol == 'X':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[2].x + 125, squares[2].y - 25),
                              (squares[6].x - 25, squares[6].y + 125), 4)
             screen.blit(window, (0, 0))
-            return 'cross'
+            return 'X'
 
         # Checking if noughts win
 
@@ -254,7 +254,7 @@ def play():
             pygame.draw.line(window, YELLOW, (squares[0].x - 50, squares[0].y + 50),
                              (squares[2].x + 150, squares[2].y + 50), 4)
             screen.blit(window, (0, 0))
-            return 'nought'
+            return 'O'
         elif squares[3].symbol == 'O' and squares[4].symbol == 'O' and squares[5].symbol == 'O':
             can_mark = False
             pygame.time.wait(250)
@@ -262,62 +262,62 @@ def play():
                              (squares[5].x + 150, squares[5].y + 50), 4)
             screen.blit(window, (0, 0))
             screen.blit(window, (0, 0))
-            return 'nought'
+            return 'O'
         elif squares[6].symbol == 'O' and squares[7].symbol == 'O' and squares[8].symbol == 'O':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[6].x - 50, squares[6].y + 50),
                              (squares[8].x + 150, squares[8].y + 50), 4)
             screen.blit(window, (0, 0))
-            return 'nought'
+            return 'O'
         elif squares[0].symbol == 'O' and squares[3].symbol == 'O' and squares[6].symbol == 'O':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[0].x + 50, squares[0].y - 50),
                              (squares[6].x + 50, squares[6].y + 150), 4)
             screen.blit(window, (0, 0))
-            return 'nought'
+            return 'O'
         elif squares[1].symbol == 'O' and squares[4].symbol == 'O' and squares[7].symbol == 'O':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[1].x + 50, squares[1].y - 50),
                              (squares[7].x + 50, squares[7].y + 150), 4)
             screen.blit(window, (0, 0))
-            return 'nought'
+            return 'O'
         elif squares[1].symbol == 'O' and squares[4].symbol == 'O' and squares[7].symbol == 'O':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[1].x + 50, squares[1].y - 50),
                              (squares[7].x + 50, squares[7].y + 150), 4)
             screen.blit(window, (0, 0))
-            return 'nought'
+            return 'O'
         elif squares[2].symbol == 'O' and squares[5].symbol == 'O' and squares[8].symbol == 'O':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[2].x + 50, squares[2].y - 50),
                              (squares[8].x + 50, squares[8].y + 150), 4)
             screen.blit(window, (0, 0))
-            return 'nought'
+            return 'O'
         elif squares[0].symbol == 'O' and squares[4].symbol == 'O' and squares[8].symbol == 'O':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[0].x - 25, squares[0].y - 25),
                              (squares[8].x + 125, squares[8].y + 125), 4)
             screen.blit(window, (0, 0))
-            return 'nought'
+            return 'O'
         elif squares[2].symbol == 'O' and squares[4].symbol == 'O' and squares[6].symbol == 'O':
             can_mark = False
             pygame.time.wait(250)
             pygame.draw.line(window, YELLOW, (squares[2].x + 125, squares[2].y - 25),
                              (squares[6].x - 25, squares[6].y + 125), 4)
             screen.blit(window, (0, 0))
-            return 'nought'
+            return 'O'
 
         for square in squares:
             if square.symbol:
                 break
         else:
-            return 'draw'
+            return 'draw'  # The if statements above should have been executed is someone had won
         screen.blit(window, (0, 0))
 
     while True:
@@ -334,19 +334,20 @@ def play():
                         if square.symbol:  # Checks if a square already has been marked with an X or O
                             continue
                         if square.collide_point(mouse_x, mouse_y):
-                            for player in players:
-                                if player.symbol == 'nought' and player.in_turn:
-                                    window.blit(nought, (square.x + 10, square.y + 10))
-                                    screen.blit(window, (0, 0))
-                                    square.symbol = 'O'
-                                    player.change_turn()
-                                    pygame.display.update()
-                                if player.symbol == 'cross' and player.in_turn:
-                                    window.blit(cross, (square.x + 10, square.y + 10))
-                                    screen.blit(window, (0, 0))
-                                    square.symbol = 'X'
-                                    player.change_turn()
-                                    pygame.display.update()
+                            if player1.in_turn:
+                                window.blit(symbols_dict[player1.symbol], (square.x + 10, square.y + 10))
+                                screen.blit(window, (0, 0))
+                                square.symbol = player1.symbol
+                                player1.change_turn()
+                                player2.change_turn()
+                                pygame.display.update()
+                            elif player2.in_turn:
+                                window.blit(symbols_dict[player2.symbol], (square.x + 10, square.y + 10))
+                                screen.blit(window, (0, 0))
+                                square.symbol = player2.symbol
+                                player1.change_turn()
+                                player2.change_turn()
+                                pygame.display.update()
                             round_result = check_for_winner()
 
         if round_result is not None:
