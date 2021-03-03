@@ -21,14 +21,6 @@ class Text:
 
 
 
-def render_text(super_surf, text, x, y):
-    my_font = pygame.font.SysFont('calibri', 20)
-    text_surf = my_font.render(text, True, (250, 250, 250), (0, 0, 0))
-    super_surf.blit(text_surf, (x, y))
-
-
-
-
 def main():
     root.fill((100, 100, 0))
     score = 0

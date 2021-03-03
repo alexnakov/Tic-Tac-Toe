@@ -45,7 +45,6 @@ class Button:
         self.surf.blit(pygame.image.load(self.path_unclicked), (0, 0))
         self.super_surf.blit(self.surf, (self.x, self.y))
 
-
     def collide_point(self, x, y):
         if self.x <= x <= self.x + self.length and self.y <= y <= self.y + self.height:
             return True
@@ -85,12 +84,6 @@ class Player:
             self.symbol = 'O'
         elif self.symbol == 'O':
             self.symbol = 'X'
-
-
-def render_text(super_surf, text, x, y):
-    my_font = pygame.font.SysFont('calibri', 30)
-    text_surf = my_font.render(text, True, (250, 250, 250), (0, 0, 0))
-    super_surf.blit(text_surf, (x, y))
 
 
 def enter_player1():
@@ -173,6 +166,12 @@ def play():
         pygame.draw.circle(nought, BLUE, (40, 40), 40, 6)
 
         symbols_dict = {'X': cross, 'O': nought}
+
+        starts_first_surf = None
+        if player1.in_turn:
+            starts_first_surf = render_text(f"1st turn this round -> {player1.name}", 25)
+        elif player2.in_turn:
+            starts_first_surf = render_text(f"1st turn this round -> {player2.name}", 25)
 
         # Creating the squares of the grid
         for i in range(3):
@@ -333,7 +332,6 @@ def play():
             screen.blit(window, (0, 0))
 
         while True:
-
             events = pygame.event.get()
             for event in events:
                 if event.type == QUIT:
@@ -369,36 +367,27 @@ def play():
                         if can_change_score:
                             player1.score += 1
                             can_change_score = False
-                            player1.change_symbol()
-                            player2.change_symbol()
                     elif player2.symbol == 'X':
                         render_centered_text(window, f"{player2.name} (cross) wins this round", 90, 35)
                         if can_change_score:
                             player2.score += 1
                             can_change_score = False
-                            player1.change_symbol()
-                            player2.change_symbol()
                 elif round_result == 'O':
                     if player1.symbol == 'O':
                         render_centered_text(window, f"{player1.name} (nought) wins this round", 90, 35)
                         if can_change_score:
                             player1.score += 1
                             can_change_score = False
-                            player1.change_symbol()
-                            player2.change_symbol()
                     elif player2.symbol == 'O':
+                        render_centered_text(window, f"{player2.name} (nought) wins this round", 90, 35)
                         if can_change_score:
                             player2.score += 1
                             can_change_score = False
-                            player1.change_symbol()
-                            player2.change_symbol()
-                        render_centered_text(window, f"{player2.name} (nought) wins this round", 90, 35)
 
-                next_round_button = Button(window, 223, 600, 233, 54, 'Assets/nextRoundu.png', 'Assets/nextRoundc.png')
+                next_round_button = Button(window, 223, 600, 233, 54,
+                                           'Assets/nextRoundu.png', 'Assets/nextRoundc.png')
                 next_round_button.update(events)
                 if next_round_button.clicked:
-                    player1.change_symbol()
-                    player2.change_symbol()
                     round()
                 else:
                     pass
@@ -409,6 +398,7 @@ def play():
             player2_name_surf = my_font.render(f"{player2_name} ({player2.symbol}): {player2.score}",
                                                True, (250, 250, 250), (0, 0, 0))
             window.blit(player2_name_surf, (690 - player2_name_surf.get_width(), 10))
+            window.blit(starts_first_surf, (700 / 2 - starts_first_surf.get_width() / 2, 5))
 
             screen.blit(window, (0, 0))
             pygame.display.update()
@@ -416,7 +406,9 @@ def play():
 
     round()
 
+
 if __name__ == '__main__':
+    pygame.init()
     screen = pygame.display.set_mode((700, 700))
     clock = pygame.time.Clock()
     player1_name, player2_name = "", ""

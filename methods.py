@@ -1,11 +1,12 @@
 import pygame
 pygame.init()
 
-def render_text(super_surf, text, x, y, centre=False):
+
+def render_text(text, font_size, letter_color=(250, 250, 250), bg_color=(0, 0, 0)):
     """ Centres the text on the super surface """
-    my_font = pygame.font.SysFont('calibri', 30)
-    text_surf = my_font.render(text, True, (250, 250, 250), (0, 0, 0))
-    super_surf.blit(text_surf, (x, y))
+    my_font = pygame.font.SysFont('calibri', font_size)
+    text_surf = my_font.render(text, True, letter_color, bg_color)
+    return text_surf
 
 
 def render_centered_text(super_surf, text, y, font_size ,padx=0, letter_color=(250, 250, 250),
