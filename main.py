@@ -324,11 +324,12 @@ def play():
                 screen.blit(window, (0, 0))
                 return 'O'
 
+            none_count = 0
             for square in squares:
-                if square.symbol:
-                    break
-            else:
-                return 'draw'  # The if statements above should have been executed is someone had won
+                if square.symbol == 'O' or square.symbol == 'X':
+                    none_count += 1
+                if none_count == 9:
+                    return 'draw'
             screen.blit(window, (0, 0))
 
         while True:
@@ -360,6 +361,7 @@ def play():
                                     pygame.display.update()
                                 round_result = check_for_winner()
 
+            print(round_result)
             if round_result is not None:
                 if round_result == 'X':
                     if player1.symbol == 'X':
@@ -383,6 +385,9 @@ def play():
                         if can_change_score:
                             player2.score += 1
                             can_change_score = False
+                elif round_result == 'draw':
+                    draw_text_surf = render_text(f"Draw! No points for either player", 30)
+                    window.blit(draw_text_surf, (700 / 2 - draw_text_surf.get_width() / 2, 90))
 
                 next_round_button = Button(window, 223, 600, 233, 54,
                                            'Assets/nextRoundu.png', 'Assets/nextRoundc.png')
