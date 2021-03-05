@@ -3,7 +3,6 @@ import sys
 from textinput import TextInput
 from pygame.locals import *
 from constants import *
-from methods import *
 
 
 class Square:
@@ -86,12 +85,35 @@ class Player:
             self.symbol = 'X'
 
 
+# Displaying text
+
+
+def render_text(text, font_size, letter_color=(250, 250, 250), bg_color=(0, 0, 0)):
+    """ Centres the text on the super surface """
+    my_font = pygame.font.SysFont('calibri', font_size)
+    text_surf = my_font.render(text, True, letter_color, bg_color)
+    return text_surf
+
+
+def render_centered_text(super_surf, text, y, font_size ,padx=0, letter_color=(250, 250, 250),
+                         bg_color=(0, 0, 0)):
+    """ Centres the text on the super surface
+        +ve padx values move text to the right """
+    font = pygame.font.SysFont('calibri', font_size)
+    text_surface = font.render(text, True,  letter_color, bg_color)
+    text_surface_width = text_surface.get_width()
+    super_surf_width = super_surf.get_width()
+    super_surf.blit(text_surface, ((super_surf_width / 2) - (text_surface_width / 2) + padx, y))
+
+# progressions of the program
+
+
 def enter_player1():
     global player1_name
     menu_surf = pygame.Surface((700, 700))
     menu_surf.blit(pygame.image.load('Assets/tictactoe.png'), (224, 80))
     menu_surf.blit(pygame.image.load('Assets/enterp1.png'), (120, 200))
-    button1 = Button(menu_surf, 150, 500, 427, 113, 'Assets/b1u.png', 'Assets/b1c.png')
+    button1 = Button(menu_surf, 150, 500, 425, 130, 'Assets/b1u.png', 'Assets/b1c.png')
     textbox1 = TextInput(menu_surf, 150, 300, 400, 100, (220, 200, 220), max_string_length=12)
     screen.blit(menu_surf, (0, 0))
 
@@ -116,7 +138,7 @@ def enter_player2():
     menu_surf = pygame.Surface((700, 700))
     menu_surf.blit(pygame.image.load('Assets/tictactoe.png'), (224, 80))
     menu_surf.blit(pygame.image.load('Assets/enterp2.png'), (120, 200))
-    button1 = Button(menu_surf, 150, 500, 427, 113, 'Assets/b1u.png', 'Assets/b1c.png')
+    button1 = Button(menu_surf, 150, 500, 425, 130, 'Assets/b2u.png', 'Assets/b2c.png')
     textbox1 = TextInput(menu_surf, 150, 300, 400, 100, (220, 200, 220), max_string_length=12)
     screen.blit(menu_surf, (0, 0))
 
@@ -361,7 +383,6 @@ def play():
                                     pygame.display.update()
                                 round_result = check_for_winner()
 
-            print(round_result)
             if round_result is not None:
                 if round_result == 'X':
                     if player1.symbol == 'X':

@@ -1,4 +1,6 @@
-# TODO credit the author of the class
+# Credits to https://github.com/Nearoo/pygame-text-input for creating this class
+# Code snippets labelled "Alex's" are my modifications to the class to suit my needs in my code
+# They are easy to find using a search engine within the file
 
 import os.path
 import pygame
@@ -15,7 +17,7 @@ class TextInput:
     """
     def __init__(
             self,
-            super_surf, x, y, width, height, surf_color, text_buffer=(10, 10),  # mine
+            super_surf, x, y, width, height, surf_color, text_buffer=(10, 10),  # Alex's
             initial_string="",
             font_family="",
             font_size=35,
@@ -38,7 +40,7 @@ class TextInput:
         :param max_string_length: Allowed length of text
         """
 
-        # mine
+        # Alex's
         self.x, self.y, self.width, self.height = x, y, width, height
         self.surf_color = surf_color
         self.super_surf = super_surf
@@ -165,7 +167,7 @@ class TextInput:
             if self.cursor_position > 0:
                 cursor_y_pos -= self.cursor_surface.get_width()
             self.surface.blit(self.cursor_surface, (cursor_y_pos, 0))
-        # mine
+        # Alex's
         self.surf.fill(self.surf_color)
         self.surf.blit(self.surface, self.text_buffer)
         self.super_surf.blit(self.surf, (self.x, self.y))
@@ -191,36 +193,3 @@ class TextInput:
     def clear_text(self):
         self.input_string = ""
         self.cursor_position = 0
-
-
-# examples of how it works
-if __name__ == "__main__":
-    pygame.init()
-
-    screen = pygame.display.set_mode((1000, 200))
-    clock = pygame.time.Clock()
-
-    surf = pygame.Surface((800, 150))
-
-    textbox = TextInput(max_string_length=12)
-
-    while True:
-        screen.fill((200, 200, 200))
-        surf.fill((100, 100, 100))
-
-        events = pygame.event.get()
-        print(events)
-        for event in events:
-            if event.type == pygame.QUIT:
-                exit()
-
-        # Feed it with events every frame
-        textbox.update(events)
-
-        # Blit its surface onto the screen
-        surf.blit(textbox.get_surface(), (10, 10))
-
-        screen.blit(surf, (10, 10))
-
-        pygame.display.update()
-        clock.tick(30)
